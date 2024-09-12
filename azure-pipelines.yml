@@ -9,9 +9,6 @@ variables:
   - name: API_URL
     value: 'http://192.168.50.91:8088'
 
-pool: 
-  name: kimoji-macbookpro
-
 steps:
 - task: Docker@2
   inputs:
@@ -28,7 +25,7 @@ steps:
 
 - task: AzureContainerApps@1
   inputs:
-    azureSubscription: 'azurecicdtestkimoji'
+    azureSubscription: 'azure-cicd-test-subscription'
     containerAppName: 'azure-cicd-test'
-    resourceGroup: 'azure-cicd-test'  # Replace with your resource group name
-    imageToDeploy: 'your-acr-name.azurecr.io/azure-cicd-test:$(Build.BuildId)'
+    resourceGroup: 'azure-cicd-test'
+    imageToDeploy: 'azurecicdtestkimoji.azurecr.io/azure-cicd-test:$(Build.BuildId)'
