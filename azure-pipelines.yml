@@ -28,4 +28,4 @@ steps:
     azureSubscription: 'azure-cicd-test-subscription'
     containerAppName: 'azure-cicd-test'
     resourceGroup: 'azure-cicd-test'
-    imageToDeploy: 'azurecicdtestkimoji.azurecr.io/azure-cicd-test:$(Build.BuildId)'
+    imageToDeploy: '$(acrName).azurecr.io/$(imageName):$(Build.BuildId)'
