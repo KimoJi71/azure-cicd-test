@@ -5,35 +5,30 @@
 trigger:
 - main
 
-resources:
-- repo: self
-
 variables:
-  # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '2fddfa98-cd01-489a-ac22-15317c32da71'
-  imageRepository: 'kimojiazurecicdtest'
-  containerRegistry: 'azurecicdtestkimoji.azurecr.io'
-  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
-  tag: '$(Build.BuildId)'
+  - name: API_URL
+    value: 'http://192.168.50.91:8088'
 
-  # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+pool: 
+  name: kimoji-macbookpro
 
-stages:
-- stage: Build
-  displayName: Build and push stage
-  jobs:
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    - task: Docker@2
-      inputs:
-        command: 'build'
-        Dockerfile: '**/Dockerfile'
-        arguments: 'API_URL=none'
-        repository: $(imageRepository)
-        containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
+steps:
+- task: Docker@2
+  inputs:
+    containerRegistry: 'azurecicdtestkimoji'
+    repository: 'azure-cicd-test'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+    buildContext: '$(System.DefaultWorkingDirectory)'
+    tags: |
+      $(Build.BuildId)
+      latest
+  env:
+    API_URL: $(API_URL)
+
+- task: AzureContainerApps@1
+  inputs:
+    azureSubscription: 'azurecicdtestkimoji'
+    containerAppName: 'azure-cicd-test'
+    resourceGroup: 'azure-cicd-test'  # Replace with your resource group name
+    imageToDeploy: 'your-acr-name.azurecr.io/azure-cicd-test:$(Build.BuildId)'
