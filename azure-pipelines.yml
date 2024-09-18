@@ -9,7 +9,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  containerRegistry: 'azurecicdtestkimoji.azurecr.io'
+  containerRegistry: 'azurecicdtestkimoji'
   imageName: 'azure-cicd-test'
   tag: '$(Build.BuildId)'
 
