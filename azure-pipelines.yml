@@ -14,16 +14,6 @@ variables:
   tag: '$(Build.BuildId)'
 
 steps:
-  - task: NodeTool@0
-    inputs:
-      versionSpec: '20.x'
-    displayName: 'Install Node.js'
-
-  - script: |
-      npm install
-      npm run build
-    displayName: 'Install dependencies and build Vue app'
-
   - task: Docker@2
     inputs:
       containerRegistry: '$(containerRegistry)'
